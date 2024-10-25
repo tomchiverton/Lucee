@@ -20,6 +20,7 @@ package lucee.runtime.functions.other;
 
 import lucee.commons.lang.ClassException;
 import lucee.commons.lang.ClassUtil;
+import lucee.commons.lang.ExceptionUtil;
 import lucee.runtime.Component;
 import lucee.runtime.ComponentImpl;
 import lucee.runtime.Page;
@@ -158,7 +159,7 @@ public class _CreateComponent {
 			}
 			catch (Exception e) {
 				ApplicationException ae = new ApplicationException("could not find component or class with name [" + path + "]");
-				// ExceptionUtil.initCauseEL(ae, e);
+				ExceptionUtil.initCauseEL(ae, e);
 				throw ae;
 			}
 		}

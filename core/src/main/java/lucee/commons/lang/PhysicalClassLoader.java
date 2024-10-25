@@ -250,11 +250,12 @@ public final class PhysicalClassLoader extends URLClassLoader implements Extenda
 
 	@Override
 	protected Class<?> findClass(String name) throws ClassNotFoundException {
-
+		ClassNotFoundException cnfe = null;
 		try {
 			return super.findClass(name);
 		}
-		catch (ClassNotFoundException cnfe) {
+		catch (ClassNotFoundException e) {
+			cnfe = e;
 		}
 
 		if (addionalClassLoader != null) {
@@ -268,6 +269,7 @@ public final class PhysicalClassLoader extends URLClassLoader implements Extenda
 		synchronized (SystemUtil.createToken("PhysicalClassLoader:load", name)) {
 			Resource res = directory.getRealResource(name.replace('.', '/').concat(".class"));
 			if (!res.isFile()) {
+				if (cnfe != null) throw cnfe;
 				throw new ClassNotFoundException("Class [" + name + "] is invalid or doesn't exist");
 			}
 
